@@ -1,0 +1,22 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="TreeDataGridEx.App"
+             xmlns:local="using:TreeDataGridEx"
+             RequestedThemeVariant="Default">
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Styles>
+
+    <FluentTheme />
+
+    <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+
+    <StyleInclude Source="avares://TreeDataGridEx/Controls/TreeDataGridEx.axaml" />
+
+  </Application.Styles>
+
+</Application>

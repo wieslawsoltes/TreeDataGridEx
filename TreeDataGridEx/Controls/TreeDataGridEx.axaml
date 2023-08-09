@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="using:TreeDataGridEx.Controls">
+
+  <Design.PreviewWith>
+    <c:TreeDataGridEx />
+  </Design.PreviewWith>
+
+  <Style Selector="c|TreeDataGridEx">
+
+    <Setter Property="Template">
+      <ControlTemplate>
+
+        <TreeDataGrid Name="PART_TreeDataGrid">
+        </TreeDataGrid>
+
+      </ControlTemplate>
+    </Setter>
+
+  </Style>
+
+</Styles>
+
