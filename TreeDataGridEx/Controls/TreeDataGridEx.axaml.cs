@@ -56,7 +56,8 @@ public class TreeDataGridEx : TemplatedControl
                     var c = CreateColumn(
                         templateColumn.Header,
                         templateColumn.CellTemplate,
-                        templateColumn.CellEditingTemplate);
+                        templateColumn.CellEditingTemplate,
+                        templateColumn.Width);
 
                     add.Invoke(_source.Columns, new object[] { c });
                 }
