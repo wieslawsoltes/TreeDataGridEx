@@ -80,7 +80,6 @@ public class TreeDataGridEx : TemplatedControl
             }
 //*/
         }
-        
     }
 
     private ITreeDataGridSource? CreateSource()
