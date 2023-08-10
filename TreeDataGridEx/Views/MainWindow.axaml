@@ -48,6 +48,20 @@
 
     </TabItem>
 
+    <TabItem Header="Drag/Drop">
+
+      <TreeDataGridEx ItemsSource="{Binding DragAndDropData}">
+        <TreeDataGridEx.Columns>
+          <TreeDataGridHierarchicalExpanderColumn ChildrenName="Children">
+            <TreeDataGridTextColumn Header="Name" Name="Name" Width="*" />
+          </TreeDataGridHierarchicalExpanderColumn>
+          <TreeDataGridCheckBoxColumn Header="Allow Drag" Name="AllowDrag" Width="Auto" />
+          <TreeDataGridCheckBoxColumn Header="Allow Drop" Name="AllowDrop" Width="Auto" />
+        </TreeDataGridEx.Columns>
+      </TreeDataGridEx>
+  
+    </TabItem>
+
     <TabItem Header="DataGrid">
 
       <DataGrid ItemsSource="{Binding Data}">

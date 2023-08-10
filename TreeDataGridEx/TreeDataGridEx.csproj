@@ -23,6 +23,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2"/>
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0"/>
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.2"/>
+    <PackageReference Include="Bogus" Version="34.0.2" />
   </ItemGroup>
 
 </Project>
