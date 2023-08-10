@@ -78,22 +78,6 @@ public class TreeDataGridEx : TemplatedControl
             }
 
             _treeDataGrid.Source = _source;
-
-/*
-            _source = new FlatTreeDataGridSource<T>(ItemsSource);
-
-            foreach (var column in Columns)
-            {
-                if (column is TreeDataGridTemplateColumn templateColumn)
-                {
-                    (_source.Columns as ColumnList<T>).Add(
-                        new TemplateColumn<T>(
-                            templateColumn.Header,
-                            templateColumn.CellTemplate,
-                            templateColumn.CellEditingTemplate));
-                }
-            }
-//*/
         }
     }
 
