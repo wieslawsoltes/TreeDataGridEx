@@ -27,7 +27,7 @@
           <TreeDataGridTemplateColumn Header="Region">
             <TreeDataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Region}" />
+                <TextBlock Text="{Binding Region}" VerticalAlignment="Center" />
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellTemplate>
             <TreeDataGridTemplateColumn.CellEditingTemplate>
