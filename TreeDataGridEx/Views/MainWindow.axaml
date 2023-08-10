@@ -32,6 +32,10 @@
             <TreeDataGridTemplateColumn.CellEditingTemplate>
               <DataTemplate>
                 <TextBox Text="{Binding Region}" />
+                <!--
+                <ComboBox ItemsSource="{x:Static local:Countries.Regions}"
+                          SelectedItem="{Binding Region}"/>
+                -->
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellEditingTemplate>
           </TreeDataGridTemplateColumn>
