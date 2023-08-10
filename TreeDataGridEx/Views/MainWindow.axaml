@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:TreeDataGridEx.ViewModels"
+        xmlns:local="using:TreeDataGridEx.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -21,18 +22,22 @@
 
       <TreeDataGridEx ItemsSource="{Binding Data}">
         <TreeDataGridEx.Columns>
-          <TreeDataGridTemplateColumn Header="Name" Width="*">
+          <TreeDataGridTextColumn Header="Country" Name="Name" Width="6*" />
+          <TreeDataGridTemplateColumn Header="Region">
             <TreeDataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Name}" />
+                <TextBlock Text="{Binding Region}" />
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellTemplate>
             <TreeDataGridTemplateColumn.CellEditingTemplate>
               <DataTemplate>
-                <TextBox Text="{Binding Name}" />
+                <TextBox Text="{Binding Region}" />
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellEditingTemplate>
           </TreeDataGridTemplateColumn>
+          <TreeDataGridTextColumn Header="Population" Name="Population" Width="3*" />
+          <TreeDataGridTextColumn Header="Area" Name="Area" Width="3*" />
+          <TreeDataGridTextColumn Header="GDP" Name="GDP" Width="3*" />
         </TreeDataGridEx.Columns>
       </TreeDataGridEx>
 

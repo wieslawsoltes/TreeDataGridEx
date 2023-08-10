@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
@@ -51,15 +53,27 @@ public class TreeDataGridEx : TemplatedControl
 
             foreach (var column in Columns)
             {
-                if (column is TreeDataGridTemplateColumn templateColumn)
+                switch (column)
                 {
-                    var c = CreateColumn(
-                        templateColumn.Header,
-                        templateColumn.CellTemplate,
-                        templateColumn.CellEditingTemplate,
-                        templateColumn.Width);
-
-                    add.Invoke(_source.Columns, new object[] { c });
+                    case TreeDataGridTemplateColumn templateColumn:
+                    {
+                        var c = CreateTemplateColumn(
+                            templateColumn.Header,
+                            templateColumn.CellTemplate,
+                            templateColumn.CellEditingTemplate,
+                            templateColumn.Width);
+                        add.Invoke(_source.Columns, new object[] { c });
+                        break;
+                    }
+                    case TreeDataGridTextColumn textColumn:
+                    {
+                        var c = CreateTextColumn(
+                            textColumn.Header,
+                            textColumn.Name,
+                            textColumn.Width);
+                        add.Invoke(_source.Columns, new object[] { c });
+                        break;
+                    }
                 }
             }
 
@@ -91,7 +105,7 @@ public class TreeDataGridEx : TemplatedControl
         return (ITreeDataGridSource?)Activator.CreateInstance(type, new object[] { ItemsSource });
     }
 
-    private IColumn? CreateColumn(
+    private IColumn? CreateTemplateColumn(
         object? header,
         IDataTemplate cellTemplate,
         IDataTemplate? cellEditingTemplate = null,
@@ -101,5 +115,41 @@ public class TreeDataGridEx : TemplatedControl
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var type = templateColumnType.MakeGenericType(modelType);
         return (IColumn?) Activator.CreateInstance(type, new object[] { header, cellTemplate, cellEditingTemplate, width, null });
+    }
+
+    private IColumn? CreateTextColumn(
+        object? header,
+        string name,
+        GridLength? width = null)
+    {
+        var templateColumnType = typeof(TextColumn<,>);
+        var modelType = ItemsSource.GetType().GenericTypeArguments[0];
+        var property = modelType.GetProperty(name);
+        var propertyType = property.PropertyType;
+        var getter = CreateGetterLambdaExpression(modelType, property);
+        var setter = CreateSetterLambdaExpression(modelType, property).Compile();
+        var type = templateColumnType.MakeGenericType(new Type[] { modelType, propertyType });
+        return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, setter, width, null });
+    }
+
+    private LambdaExpression CreateGetterLambdaExpression(Type modelType, PropertyInfo property)
+    {
+        var valueType = property.PropertyType;
+        var modelParameter = Expression.Parameter(modelType, "model");
+        var propertyAccess = Expression.Property(modelParameter, property);
+        var convertedPropertyAccess = Expression.Convert(propertyAccess, valueType);
+        var lambdaType = typeof(Func<,>).MakeGenericType(modelType, valueType);
+        return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
+    }
+
+    private LambdaExpression CreateSetterLambdaExpression(Type modelType, PropertyInfo property)
+    {
+        var valueType = property.PropertyType;
+        var modelParameter = Expression.Parameter(modelType, "model");
+        var valueParameter = Expression.Parameter(valueType, "value");
+        var propertyAccess = Expression.Property(modelParameter, property);
+        var assign = Expression.Assign(propertyAccess, Expression.Convert(valueParameter, property.PropertyType));
+        var lambdaType = typeof(Action<,>).MakeGenericType(modelType, valueType);
+        return Expression.Lambda(lambdaType, assign, modelParameter, valueParameter);
     }
 }
