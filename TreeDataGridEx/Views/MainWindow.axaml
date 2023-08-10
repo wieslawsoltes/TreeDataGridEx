@@ -43,6 +43,20 @@
 
     </TabItem>
 
+    <TabItem Header="DataGrid">
+
+      <DataGrid ItemsSource="{Binding Data}">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Country or Region" Binding="{Binding Name}" Width="6*" x:DataType="local:Country" />
+          <DataGridTextColumn Header="Region" Binding="{Binding Region}" Width="Auto" x:DataType="local:Country" />
+          <DataGridTextColumn DisplayIndex="3" Header="Population" Binding="{Binding Population}" Width="3*" x:DataType="local:Country" />
+          <DataGridTextColumn DisplayIndex="2" Header="Area" Binding="{Binding Area}" Width="3*" x:DataType="local:Country" />
+          <DataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" x:DataType="local:Country" />
+        </DataGrid.Columns>
+      </DataGrid>
+
+    </TabItem>
+
   </TabControl>
   
 </Window>
