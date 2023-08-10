@@ -113,6 +113,10 @@ public class TreeDataGridEx : TemplatedControl
         var getter = CreateGetterLambdaExpression(modelType, property);
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
         var type = templateColumnType.MakeGenericType(new Type[] { modelType, propertyType });
+        if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
+        {
+            return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, width, null });
+        }
         return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, setter, width, null });
     }
 
