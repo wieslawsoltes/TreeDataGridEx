@@ -74,6 +74,15 @@ public class TreeDataGridEx : TemplatedControl
                         add.Invoke(_source.Columns, new object[] { c });
                         break;
                     }
+                    case TreeDataGridCheckBoxColumn checkBoxColumn:
+                    {
+                        var c = CreateCheckBoxColumn(
+                            checkBoxColumn.Header,
+                            checkBoxColumn.Name,
+                            checkBoxColumn.Width);
+                        add.Invoke(_source.Columns, new object[] { c });
+                        break;
+                    }
                 }
             }
 
@@ -113,6 +122,25 @@ public class TreeDataGridEx : TemplatedControl
         var getter = CreateGetterLambdaExpression(modelType, property);
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
         var type = templateColumnType.MakeGenericType(new Type[] { modelType, propertyType });
+        if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
+        {
+            return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, width, null });
+        }
+        return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, setter, width, null });
+    }
+
+    private IColumn? CreateCheckBoxColumn(
+        object? header,
+        string name,
+        GridLength? width = null)
+    {
+        var templateColumnType = typeof(CheckBoxColumn<>);
+        var modelType = ItemsSource.GetType().GenericTypeArguments[0];
+        var property = modelType.GetProperty(name);
+        var propertyType = property.PropertyType;
+        var getter = CreateGetterLambdaExpression(modelType, property);
+        var setter = CreateSetterLambdaExpression(modelType, property).Compile();
+        var type = templateColumnType.MakeGenericType(new Type[] { modelType });
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
             return (IColumn?) Activator.CreateInstance(type, new object[] { header, getter, width, null });

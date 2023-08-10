@@ -22,6 +22,7 @@
 
       <TreeDataGridEx ItemsSource="{Binding Data}">
         <TreeDataGridEx.Columns>
+          <TreeDataGridCheckBoxColumn Header="*" Name="IsSelected" Width="Auto" />
           <TreeDataGridTextColumn Header="Country" Name="Name" Width="6*" />
           <TreeDataGridTemplateColumn Header="Region">
             <TreeDataGridTemplateColumn.CellTemplate>
