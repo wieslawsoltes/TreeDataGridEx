@@ -12,7 +12,7 @@ public abstract class TreeDataGridColumn : AvaloniaObject
             (o, v) => o.Header = v);
 
     public static readonly StyledProperty<GridLength> WidthProperty = 
-        AvaloniaProperty.Register<TreeDataGridColumn, GridLength>(nameof(Width));
+        AvaloniaProperty.Register<TreeDataGridColumn, GridLength>(nameof(Width), GridLength.Auto);
 
     private object? _header;
 
