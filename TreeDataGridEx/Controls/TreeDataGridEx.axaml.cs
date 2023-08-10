@@ -38,7 +38,7 @@ public class TreeDataGridEx : TemplatedControl
     {
         SetCurrentValue(ColumnsProperty, new ObservableCollection<TreeDataGridColumn>());
     }
-    
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
