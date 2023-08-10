@@ -5,7 +5,7 @@ using Avalonia.Metadata;
 
 namespace TreeDataGridEx.Controls;
 
-public class TreeDataGridTemplateColumn : TreeDataGridColumn
+public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
 {
     public static readonly DirectProperty<DataGridTemplateColumn, IDataTemplate?> CellTemplateProperty =
         AvaloniaProperty.RegisterDirect<DataGridTemplateColumn, IDataTemplate?>(

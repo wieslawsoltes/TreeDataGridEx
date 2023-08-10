@@ -3,7 +3,7 @@ using Avalonia.Metadata;
 
 namespace TreeDataGridEx.Controls;
 
-public class TreeDataGridTextColumn : TreeDataGridColumn
+public class TreeDataGridTextColumn : TreeDataGridColumnBase
 {
     public static readonly DirectProperty<TreeDataGridTextColumn, string?> NameProperty =
         AvaloniaProperty.RegisterDirect<TreeDataGridTextColumn, string?>(

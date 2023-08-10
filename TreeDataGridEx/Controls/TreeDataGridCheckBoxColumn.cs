@@ -3,7 +3,7 @@ using Avalonia.Metadata;
 
 namespace TreeDataGridEx.Controls;
 
-public class TreeDataGridCheckBoxColumn : TreeDataGridColumn
+public class TreeDataGridCheckBoxColumn : TreeDataGridColumnBase
 {
     public static readonly DirectProperty<TreeDataGridCheckBoxColumn, string?> NameProperty =
         AvaloniaProperty.RegisterDirect<TreeDataGridCheckBoxColumn, string?>(
