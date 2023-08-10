@@ -18,7 +18,7 @@
 
   <TabControl>
 
-    <TabItem Header="TreeDataGridEx">
+    <TabItem Header="Countries">
 
       <TreeDataGridEx ItemsSource="{Binding Data}">
         <TreeDataGridEx.Columns>
