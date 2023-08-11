@@ -52,11 +52,12 @@ public class TreeDataGridEx : TemplatedControl
             return;
         }
 
-        var modelType = ItemsSource.GetType().GenericTypeArguments[0];
+        var itemsSource = ItemsSource;
+        var modelType = itemsSource.GetType().GenericTypeArguments[0];
 
         _source = Columns.Any(x => x is TreeDataGridHierarchicalExpanderColumn) 
-            ? CreateHierarchicalSource(modelType) 
-            : CreateFlatSource(modelType);
+            ? CreateHierarchicalSource(modelType, itemsSource) 
+            : CreateFlatSource(modelType, itemsSource);
         if (_source is null)
         {
             return;
@@ -80,16 +81,16 @@ public class TreeDataGridEx : TemplatedControl
         _treeDataGrid.Source = _source;
     }
 
-    private ITreeDataGridSource? CreateFlatSource(Type modelType)
+    private ITreeDataGridSource? CreateFlatSource(Type modelType, IEnumerable items)
     {
         var type = typeof(FlatTreeDataGridSource<>).MakeGenericType(modelType);
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, ItemsSource);
+        return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
-    private ITreeDataGridSource? CreateHierarchicalSource(Type modelType)
+    private ITreeDataGridSource? CreateHierarchicalSource(Type modelType, IEnumerable items)
     {
         var type = typeof(HierarchicalTreeDataGridSource<>).MakeGenericType(modelType);
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, ItemsSource);
+        return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
     private IColumn? CreateColumn(
