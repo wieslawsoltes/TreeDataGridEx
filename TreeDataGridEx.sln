@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{E8C54A26
 		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeDataGridExDemo", "TreeDataGridExDemo\TreeDataGridExDemo.csproj", "{6275CD13-658A-48EE-969B-007594B982B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{122C6D32-0E37-4EC1-9109-CC2475DF558E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{122C6D32-0E37-4EC1-9109-CC2475DF558E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{122C6D32-0E37-4EC1-9109-CC2475DF558E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6275CD13-658A-48EE-969B-007594B982B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6275CD13-658A-48EE-969B-007594B982B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6275CD13-658A-48EE-969B-007594B982B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6275CD13-658A-48EE-969B-007594B982B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

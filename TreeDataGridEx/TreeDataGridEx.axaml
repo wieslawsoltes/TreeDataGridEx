@@ -1,12 +1,12 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:c="using:TreeDataGridEx.Controls">
+        xmlns:local="using:TreeDataGridEx">
 
   <Design.PreviewWith>
-    <c:TreeDataGridEx />
+    <local:TreeDataGridEx />
   </Design.PreviewWith>
 
-  <Style Selector="c|TreeDataGridEx">
+  <Style Selector="local|TreeDataGridEx">
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -20,4 +20,3 @@
   </Style>
 
 </Styles>
-

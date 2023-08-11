@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
 public abstract class TreeDataGridColumnBase : TreeDataGridColumn
 {

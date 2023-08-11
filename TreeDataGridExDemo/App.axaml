@@ -15,7 +15,7 @@
     <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
-    <StyleInclude Source="avares://TreeDataGridEx/Controls/TreeDataGridEx.axaml" />
+    <StyleInclude Source="avares://TreeDataGridEx/TreeDataGridEx.axaml" />
 
   </Application.Styles>
 

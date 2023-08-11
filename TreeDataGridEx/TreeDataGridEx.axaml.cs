@@ -11,7 +11,7 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
 public class TreeDataGridEx : TemplatedControl
 {

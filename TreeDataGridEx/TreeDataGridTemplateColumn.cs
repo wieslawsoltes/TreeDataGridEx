@@ -3,18 +3,18 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
 public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
 {
-    public static readonly DirectProperty<DataGridTemplateColumn, IDataTemplate?> CellTemplateProperty =
-        AvaloniaProperty.RegisterDirect<DataGridTemplateColumn, IDataTemplate?>(
+    public static readonly DirectProperty<TreeDataGridTemplateColumn, IDataTemplate?> CellTemplateProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn, IDataTemplate?>(
             nameof(CellTemplate),
             o => o.CellTemplate,
             (o, v) => o.CellTemplate = v);
 
-    public static readonly DirectProperty<DataGridTemplateColumn, IDataTemplate?> CellEditingTemplateProperty =
-        AvaloniaProperty.RegisterDirect<DataGridTemplateColumn, IDataTemplate?>(
+    public static readonly DirectProperty<TreeDataGridTemplateColumn, IDataTemplate?> CellEditingTemplateProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn, IDataTemplate?>(
             nameof(CellEditingTemplate),
             o => o.CellEditingTemplate,
             (o, v) => o.CellEditingTemplate = v);

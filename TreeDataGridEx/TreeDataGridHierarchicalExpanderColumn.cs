@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Metadata;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
 public class TreeDataGridHierarchicalExpanderColumn : TreeDataGridColumn
 {

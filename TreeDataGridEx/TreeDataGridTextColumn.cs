@@ -1,12 +1,12 @@
 using Avalonia;
 using Avalonia.Metadata;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
-public class TreeDataGridCheckBoxColumn : TreeDataGridColumnBase
+public class TreeDataGridTextColumn : TreeDataGridColumnBase
 {
-    public static readonly DirectProperty<TreeDataGridCheckBoxColumn, string?> NameProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridCheckBoxColumn, string?>(
+    public static readonly DirectProperty<TreeDataGridTextColumn, string?> NameProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTextColumn, string?>(
             nameof(Name),
             o => o.Name,
             (o, v) => o.Name = v);

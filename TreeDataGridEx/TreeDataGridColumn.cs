@@ -1,6 +1,6 @@
 using Avalonia;
 
-namespace TreeDataGridEx.Controls;
+namespace TreeDataGridEx;
 
 public abstract class TreeDataGridColumn : AvaloniaObject
 {
