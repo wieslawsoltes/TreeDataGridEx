@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Rendering;
 
-namespace TreeDataGridEx.Views;
+namespace TreeDataGridExDemo.Views;
 
 public partial class MainWindow : Window
 {

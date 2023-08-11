@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
 
-namespace TreeDataGridEx.Models
+namespace TreeDataGridExDemo.Models
 {
     public class DragDropItem : ReactiveObject
     {

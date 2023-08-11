@@ -1,4 +1,4 @@
-﻿namespace TreeDataGridEx.Models
+﻿namespace TreeDataGridExDemo.Models
 {
     public class Country
     {

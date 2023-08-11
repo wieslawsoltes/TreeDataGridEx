@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using TreeDataGridEx.ViewModels;
-using TreeDataGridEx.Views;
+using TreeDataGridExDemo.ViewModels;
+using TreeDataGridExDemo.Views;
 
-namespace TreeDataGridEx;
+namespace TreeDataGridExDemo;
 
 public partial class App : Application
 {

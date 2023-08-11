@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using TreeDataGridEx.Models;
+using TreeDataGridExDemo.Models;
 
-namespace TreeDataGridEx.ViewModels;
+namespace TreeDataGridExDemo.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {

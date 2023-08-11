@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace TreeDataGridEx.ViewModels;
+namespace TreeDataGridExDemo.ViewModels;
 
 public class ViewModelBase : ReactiveObject
 {

@@ -2,7 +2,7 @@
 using Avalonia.ReactiveUI;
 using System;
 
-namespace TreeDataGridEx;
+namespace TreeDataGridExDemo;
 
 class Program
 {
