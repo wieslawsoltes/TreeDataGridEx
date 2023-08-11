@@ -83,7 +83,7 @@ public class TreeDataGridEx : TemplatedControl
         var flatTreeDataGridSourceType = typeof(FlatTreeDataGridSource<>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var type = flatTreeDataGridSourceType.MakeGenericType(modelType);
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, new object[] { ItemsSource });
+        return (ITreeDataGridSource?)Activator.CreateInstance(type, ItemsSource);
     }
 
     private ITreeDataGridSource? CreateHierarchicalSource()
@@ -91,7 +91,7 @@ public class TreeDataGridEx : TemplatedControl
         var flatTreeDataGridSourceType = typeof(HierarchicalTreeDataGridSource<>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var type = flatTreeDataGridSourceType.MakeGenericType(modelType);
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, new object[] { ItemsSource });
+        return (ITreeDataGridSource?)Activator.CreateInstance(type, ItemsSource);
     }
 
     private IColumn? CreateColumn(TreeDataGridColumn column)
@@ -100,6 +100,10 @@ public class TreeDataGridEx : TemplatedControl
         {
             case TreeDataGridTemplateColumn templateColumn:
             {
+                if (templateColumn.CellTemplate is null)
+                {
+                    return null;
+                }
                 return CreateTemplateColumn(
                     templateColumn.Header,
                     templateColumn.CellTemplate,
@@ -108,6 +112,10 @@ public class TreeDataGridEx : TemplatedControl
             }
             case TreeDataGridTextColumn textColumn:
             {
+                if (textColumn.Name is null)
+                {
+                    return null;
+                }
                 return CreateTextColumn(
                     textColumn.Header,
                     textColumn.Name,
@@ -115,6 +123,10 @@ public class TreeDataGridEx : TemplatedControl
             }
             case TreeDataGridCheckBoxColumn checkBoxColumn:
             {
+                if (checkBoxColumn.Name is null)
+                {
+                    return null;
+                }
                 return CreateCheckBoxColumn(
                     checkBoxColumn.Header,
                     checkBoxColumn.Name,
@@ -122,6 +134,10 @@ public class TreeDataGridEx : TemplatedControl
             }
             case TreeDataGridHierarchicalExpanderColumn hierarchicalExpanderColumn:
             {
+                if (hierarchicalExpanderColumn.ChildrenName is null)
+                {
+                    return null;
+                }
                 var inner = hierarchicalExpanderColumn.Inner is not null 
                     ? CreateColumn(hierarchicalExpanderColumn.Inner)
                     : null;
@@ -138,17 +154,15 @@ public class TreeDataGridEx : TemplatedControl
 
     private IColumn? CreateHierarchicalExpanderColumn(IColumn? inner, string childrenName)
     {
-        var templateColumnType = typeof(HierarchicalExpanderColumn<>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var property = modelType.GetProperty(childrenName);
         if (property is null)
         {
             return null;
         }
-        var propertyType = property.PropertyType;
         var childSelector = CreateChildSelectorLambdaExpression(modelType, property).Compile();
-        var type = templateColumnType.MakeGenericType(new Type[] { modelType });
-        return (IColumn?) Activator.CreateInstance(type, new object?[] { inner, childSelector, null, null });
+        var type = typeof(HierarchicalExpanderColumn<>).MakeGenericType(modelType);
+        return (IColumn?) Activator.CreateInstance(type, inner, childSelector, null, null);
     }
 
     private IColumn? CreateTemplateColumn(
@@ -157,10 +171,9 @@ public class TreeDataGridEx : TemplatedControl
         IDataTemplate? cellEditingTemplate = null,
         GridLength? width = null)
     {
-        var templateColumnType = typeof(TemplateColumn<>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
-        var type = templateColumnType.MakeGenericType(modelType);
-        return (IColumn?) Activator.CreateInstance(type, new object[] { header, cellTemplate, cellEditingTemplate, width, null });
+        var type = typeof(TemplateColumn<>).MakeGenericType(modelType);
+        return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, null);
     }
 
     private IColumn? CreateTextColumn(
@@ -168,7 +181,6 @@ public class TreeDataGridEx : TemplatedControl
         string name,
         GridLength? width = null)
     {
-        var templateColumnType = typeof(TextColumn<,>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var property = modelType.GetProperty(name);
         if (property is null)
@@ -177,13 +189,13 @@ public class TreeDataGridEx : TemplatedControl
         }
         var propertyType = property.PropertyType;
         var getter = CreateGetterLambdaExpression(modelType, property);
-        var type = templateColumnType.MakeGenericType(new Type[] { modelType, propertyType });
+        var type = typeof(TextColumn<,>).MakeGenericType(modelType, propertyType);
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
-            return (IColumn?) Activator.CreateInstance(type, new object?[] { header, getter, width, null });
+            return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
         }
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
-        return (IColumn?) Activator.CreateInstance(type, new object?[] { header, getter, setter, width, null });
+        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
     private IColumn? CreateCheckBoxColumn(
@@ -191,7 +203,6 @@ public class TreeDataGridEx : TemplatedControl
         string name,
         GridLength? width = null)
     {
-        var templateColumnType = typeof(CheckBoxColumn<>);
         var modelType = ItemsSource.GetType().GenericTypeArguments[0];
         var property = modelType.GetProperty(name);
         if (property is null)
@@ -199,13 +210,13 @@ public class TreeDataGridEx : TemplatedControl
             return null;
         }
         var getter = CreateGetterLambdaExpression(modelType, property);
-        var type = templateColumnType.MakeGenericType(new Type[] { modelType });
+        var type = typeof(CheckBoxColumn<>).MakeGenericType(modelType);
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
-            return (IColumn?) Activator.CreateInstance(type, new object?[] { header, getter, width, null });
+            return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
         }
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
-        return (IColumn?) Activator.CreateInstance(type, new object?[] { header, getter, setter, width, null });
+        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
     private LambdaExpression CreateGetterLambdaExpression(Type modelType, PropertyInfo property)
