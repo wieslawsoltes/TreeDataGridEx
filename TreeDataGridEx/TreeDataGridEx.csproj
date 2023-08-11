@@ -8,16 +8,25 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0"/>
-  </ItemGroup>
+  <PropertyGroup>
+    <VersionPrefix>11.0.0</VersionPrefix>
+    <VersionSuffix>alpha.0</VersionSuffix>
+    <Authors>Wiesław Šoltés</Authors>
+    <Company>Wiesław Šoltés</Company>
+    <Copyright>Copyright © Wiesław Šoltés 2023</Copyright>
+    <PackageProjectUrl>https://github.com/wieslawsoltes/Avalonia.Skia.Lottie</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>An TreeDataGridEx control for Avalonia.</Description>
+    <PackageId>TreeDataGridEx</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>datagrid;treedatagrid;xaml;control;avalonia;avaloniaui</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="TreeDataGridEx.axaml.cs">
-      <DependentUpon>TreeDataGridEx.axaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <PackageReference Include="Avalonia" Version="11.0.0"/>
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0"/>
   </ItemGroup>
 
 </Project>
