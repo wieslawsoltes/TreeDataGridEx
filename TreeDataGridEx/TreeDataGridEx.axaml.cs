@@ -36,6 +36,8 @@ public class TreeDataGridEx : TemplatedControl
         set => SetValue(ColumnsProperty, value);
     }
 
+    public TreeDataGrid? TreeDataGrid => _treeDataGrid;
+
     public TreeDataGridEx()
     {
         SetCurrentValue(ColumnsProperty, new ObservableCollection<TreeDataGridColumn>());
