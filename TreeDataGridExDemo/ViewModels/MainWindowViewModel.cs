@@ -5,16 +5,16 @@ namespace TreeDataGridExDemo.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly ObservableCollection<Country> _data;
-    private ObservableCollection<DragDropItem> _dragAndDropData;
+    private readonly ObservableCollection<Country> _countries;
+    private ObservableCollection<DragDropItem> _dragAndDropItems;
 
     public MainWindowViewModel()
     {
-        _data = new ObservableCollection<Country>(Countries.All);
-        _dragAndDropData = DragDropItem.CreateRandomItems();
+        _countries = new ObservableCollection<Country>(Models.Countries.All);
+        _dragAndDropItems = DragDropItem.CreateRandomItems();
     }
 
-    public ObservableCollection<Country> Data => _data;
+    public ObservableCollection<Country> Countries => _countries;
 
-    public ObservableCollection<DragDropItem> DragAndDropData => _dragAndDropData;
+    public ObservableCollection<DragDropItem> DragAndDropItems => _dragAndDropItems;
 }

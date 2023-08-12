@@ -20,7 +20,7 @@
 
     <TabItem Header="Countries">
 
-      <TreeDataGridEx ItemsSource="{Binding Data}">
+      <TreeDataGridEx ItemsSource="{Binding Countries}">
         <TreeDataGridEx.Columns>
           <TreeDataGridCheckBoxColumn Header="*" Name="IsSelected" Width="Auto" />
           <TreeDataGridTextColumn Header="Country" Name="Name" Width="6*" />
@@ -33,10 +33,7 @@
             <TreeDataGridTemplateColumn.CellEditingTemplate>
               <DataTemplate>
                 <TextBox Text="{Binding Region}" />
-                <!--
-                <ComboBox ItemsSource="{x:Static local:Countries.Regions}"
-                          SelectedItem="{Binding Region}"/>
-                -->
+                <!--<ComboBox ItemsSource="{x:Static local:Countries.Regions}" SelectedItem="{Binding Region}"/>-->
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellEditingTemplate>
           </TreeDataGridTemplateColumn>
@@ -50,7 +47,7 @@
 
     <TabItem Header="Drag/Drop">
 
-      <TreeDataGridEx ItemsSource="{Binding DragAndDropData}">
+      <TreeDataGridEx ItemsSource="{Binding DragAndDropItems}">
         <TreeDataGridEx.Columns>
           <TreeDataGridHierarchicalExpanderColumn ChildrenName="Children">
             <TreeDataGridTextColumn Header="Name" Name="Name" Width="*" />
@@ -64,7 +61,7 @@
 
     <TabItem Header="DataGrid">
 
-      <DataGrid ItemsSource="{Binding Data}">
+      <DataGrid ItemsSource="{Binding Countries}">
         <DataGrid.Columns>
           <DataGridTextColumn Header="Country or Region" Binding="{Binding Name}" Width="6*" x:DataType="local:Country" />
           <DataGridTextColumn Header="Region" Binding="{Binding Region}" Width="Auto" x:DataType="local:Country" />
