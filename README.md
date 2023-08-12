@@ -4,7 +4,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/TreeDataGridEx.svg)](https://www.nuget.org/packages/TreeDataGridEx)
 
-**TreeDataGridEx** is ex experimental version of [TreeDataGrid](https://github.com/AvaloniaUI/Avalonia.Controls.TreeDataGrid) for [Avalonia](https://github.com/AvaloniaUI/Avalonia) with added XAML syntax.
+**TreeDataGridEx** is en experimental version of [TreeDataGrid](https://github.com/AvaloniaUI/Avalonia.Controls.TreeDataGrid) for [Avalonia](https://github.com/AvaloniaUI/Avalonia) with added XAML syntax.
 
 ![image](https://github.com/wieslawsoltes/TreeDataGridEx/assets/2297442/cd6d9484-3707-40a7-b012-e0d58966c406)
 
