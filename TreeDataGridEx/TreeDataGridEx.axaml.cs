@@ -211,7 +211,7 @@ public class TreeDataGridEx : TemplatedControl
     }
 
     private static IColumn? CreateTextColumn(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] 
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
         object? header,
         IBinding binding,
