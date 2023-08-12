@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,6 +11,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Data;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace TreeDataGridEx;
 
@@ -77,7 +80,8 @@ public class TreeDataGridEx : TemplatedControl
             return null;
         }
 
-        var add = source.Columns.GetType().GetMethod("Add");
+        var columnsType = typeof(ColumnList<>).MakeGenericType(modelType);
+        var add = columnsType.GetMethod("Add");
         if (add is null)
         {
             return null;
@@ -95,19 +99,26 @@ public class TreeDataGridEx : TemplatedControl
         return source;
     }
 
-    private static ITreeDataGridSource? CreateFlatSource(Type modelType, IEnumerable items)
+    private static ITreeDataGridSource? CreateFlatSource(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType,
+        IEnumerable items)
     {
         var type = typeof(FlatTreeDataGridSource<>).MakeGenericType(modelType);
         return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
-    private static ITreeDataGridSource? CreateHierarchicalSource(Type modelType, IEnumerable items)
+    private static ITreeDataGridSource? CreateHierarchicalSource(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType,
+        IEnumerable items)
     {
         var type = typeof(HierarchicalTreeDataGridSource<>).MakeGenericType(modelType);
         return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
     private static IColumn? CreateColumn(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
         TreeDataGridColumn column)
     {
@@ -128,26 +139,26 @@ public class TreeDataGridEx : TemplatedControl
             }
             case TreeDataGridTextColumn textColumn:
             {
-                if (textColumn.Name is null)
+                if (textColumn.Binding is null)
                 {
                     return null;
                 }
                 return CreateTextColumn(
                     modelType,
                     textColumn.Header,
-                    textColumn.Name,
+                    textColumn.Binding,
                     textColumn.Width);
             }
             case TreeDataGridCheckBoxColumn checkBoxColumn:
             {
-                if (checkBoxColumn.Name is null)
+                if (checkBoxColumn.Binding is null)
                 {
                     return null;
                 }
                 return CreateCheckBoxColumn(
                     modelType,
                     checkBoxColumn.Header,
-                    checkBoxColumn.Name,
+                    checkBoxColumn.Binding,
                     checkBoxColumn.Width);
             }
             case TreeDataGridHierarchicalExpanderColumn hierarchicalExpanderColumn:
@@ -172,6 +183,7 @@ public class TreeDataGridEx : TemplatedControl
     }
 
     private static IColumn? CreateHierarchicalExpanderColumn(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
         IColumn? inner, 
         string childrenName)
@@ -187,6 +199,7 @@ public class TreeDataGridEx : TemplatedControl
     }
 
     private static IColumn? CreateTemplateColumn(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type modelType,
         object? header,
         IDataTemplate cellTemplate,
@@ -198,12 +211,18 @@ public class TreeDataGridEx : TemplatedControl
     }
 
     private static IColumn? CreateTextColumn(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] 
         Type modelType,
         object? header,
-        string name,
+        IBinding binding,
         GridLength? width = null)
     {
-        var property = modelType.GetProperty(name);
+        var path = (binding as Binding)?.Path ?? (binding as CompiledBindingExtension)?.Path.ToString();
+        if (path is null)
+        {
+            return null;
+        }
+        var property = modelType.GetProperty(path);
         if (property is null)
         {
             return null;
@@ -220,12 +239,18 @@ public class TreeDataGridEx : TemplatedControl
     }
 
     private static IColumn? CreateCheckBoxColumn(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
         object? header,
-        string name,
+        IBinding? binding,
         GridLength? width = null)
     {
-        var property = modelType.GetProperty(name);
+        var path = (binding as Binding)?.Path ?? (binding as CompiledBindingExtension)?.Path.ToString();
+        if (path is null)
+        {
+            return null;
+        }
+        var property = modelType.GetProperty(path);
         if (property is null)
         {
             return null;
@@ -240,7 +265,10 @@ public class TreeDataGridEx : TemplatedControl
         return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
-    private static LambdaExpression CreateGetterLambdaExpression(Type modelType, PropertyInfo property)
+    private static LambdaExpression CreateGetterLambdaExpression(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType, 
+        PropertyInfo property)
     {
         var valueType = property.PropertyType;
         var modelParameter = Expression.Parameter(modelType, "model");
@@ -250,7 +278,10 @@ public class TreeDataGridEx : TemplatedControl
         return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
     }
 
-    private static LambdaExpression CreateSetterLambdaExpression(Type modelType, PropertyInfo property)
+    private static LambdaExpression CreateSetterLambdaExpression(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType, 
+        PropertyInfo property)
     {
         var valueType = property.PropertyType;
         var modelParameter = Expression.Parameter(modelType, "model");
@@ -261,7 +292,10 @@ public class TreeDataGridEx : TemplatedControl
         return Expression.Lambda(lambdaType, assign, modelParameter, valueParameter);
     }
 
-    private static LambdaExpression CreateChildSelectorLambdaExpression(Type modelType, PropertyInfo property)
+    private static LambdaExpression CreateChildSelectorLambdaExpression(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType, 
+        PropertyInfo property)
     {
         var valueType = typeof(IEnumerable<>).MakeGenericType(modelType);
         var modelParameter = Expression.Parameter(modelType, "model");

@@ -45,8 +45,8 @@ Available column types:
 ```xaml
 <TreeDataGridEx ItemsSource="{Binding Countries}">
   <TreeDataGridEx.Columns>
-    <TreeDataGridCheckBoxColumn Header="*" Name="IsSelected" Width="Auto" />
-    <TreeDataGridTextColumn Header="Country" Name="Name" Width="6*" />
+    <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" />
+    <TreeDataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" />
     <TreeDataGridTemplateColumn Header="Region">
       <TreeDataGridTemplateColumn.CellTemplate>
         <DataTemplate>
@@ -59,9 +59,9 @@ Available column types:
         </DataTemplate>
       </TreeDataGridTemplateColumn.CellEditingTemplate>
     </TreeDataGridTemplateColumn>
-    <TreeDataGridTextColumn Header="Population" Name="Population" Width="3*" />
-    <TreeDataGridTextColumn Header="Area" Name="Area" Width="3*" />
-    <TreeDataGridTextColumn Header="GDP" Name="GDP" Width="3*" />
+    <TreeDataGridTextColumn Header="Population" Binding="{Binding Population}" Width="3*" />
+    <TreeDataGridTextColumn Header="Area" Binding="{Binding Area}" Width="3*" />
+    <TreeDataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" />
   </TreeDataGridEx.Columns>
 </TreeDataGridEx>
 ```
@@ -72,10 +72,10 @@ Available column types:
 <TreeDataGridEx ItemsSource="{Binding DragAndDropItems}">
   <TreeDataGridEx.Columns>
     <TreeDataGridHierarchicalExpanderColumn ChildrenName="Children">
-      <TreeDataGridTextColumn Header="Name" Name="Name" Width="*" />
+      <TreeDataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
     </TreeDataGridHierarchicalExpanderColumn>
-    <TreeDataGridCheckBoxColumn Header="Allow Drag" Name="AllowDrag" Width="Auto" />
-    <TreeDataGridCheckBoxColumn Header="Allow Drop" Name="AllowDrop" Width="Auto" />
+    <TreeDataGridCheckBoxColumn Header="Allow Drag" Binding="{Binding AllowDrag}" Width="Auto" />
+    <TreeDataGridCheckBoxColumn Header="Allow Drop" Binding="{Binding AllowDrop}" Width="Auto" />
   </TreeDataGridEx.Columns>
 </TreeDataGridEx>
 ```

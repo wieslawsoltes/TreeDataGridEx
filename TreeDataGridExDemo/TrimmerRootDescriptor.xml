@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="Avalonia.Controls.TreeDataGrid" preserve="all" />
+  <assembly fullname="TreeDataGridEx" preserve="all" />
+  <assembly fullname="TreeDataGridExDemo" preserve="all" />
+</linker>

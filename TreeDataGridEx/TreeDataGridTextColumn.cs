@@ -1,23 +1,25 @@
 using Avalonia;
+using Avalonia.Data;
 using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
 public class TreeDataGridTextColumn : TreeDataGridColumnBase
 {
-    public static readonly DirectProperty<TreeDataGridTextColumn, string?> NameProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridTextColumn, string?>(
-            nameof(Name),
-            o => o.Name,
-            (o, v) => o.Name = v);
+    public static readonly DirectProperty<TreeDataGridTextColumn, IBinding?> BindingProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTextColumn, IBinding?>(
+            nameof(Binding),
+            o => o.Binding,
+            (o, v) => o.Binding = v);
 
-    private string? _name;
+    private IBinding? _binding;
 
     [Content]
     [InheritDataTypeFromItems(nameof(TreeDataGridEx.ItemsSource), AncestorType = typeof(TreeDataGridEx))]
-    public string? Name
+    [AssignBinding]
+    public IBinding? Binding
     {
-        get { return _name; }
-        set { SetAndRaise(NameProperty, ref _name, value); }
+        get { return _binding; }
+        set { SetAndRaise(BindingProperty, ref _binding, value); }
     }
 }
