@@ -6,6 +6,8 @@
 
 **TreeDataGridEx** is ex experimental version of [TreeDataGrid](https://github.com/AvaloniaUI/Avalonia.Controls.TreeDataGrid) for [Avalonia](https://github.com/AvaloniaUI/Avalonia) with added XAML syntax.
 
+![image](https://github.com/wieslawsoltes/TreeDataGridEx/assets/2297442/cd6d9484-3707-40a7-b012-e0d58966c406)
+
 ## Usage
 
 _**Warning:** Please note that the TreeDataGridEx control uses reflection so it might cause issues when using AOT compilation or trimming._
