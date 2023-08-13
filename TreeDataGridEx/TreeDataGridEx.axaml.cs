@@ -89,7 +89,7 @@ public class TreeDataGridEx : TemplatedControl
 
         foreach (var column in columns)
         {
-            var c = CreateColumn(modelType, column);
+            var c = CreateColumn(column.DataType ?? modelType, column);
             if (c is not null)
             {
                 add.Invoke(source.Columns, new object[] { c });
