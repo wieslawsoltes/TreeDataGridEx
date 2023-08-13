@@ -222,6 +222,7 @@ public class TreeDataGridEx : TemplatedControl
         {
             return null;
         }
+
         var property = modelType.GetProperty(path);
         if (property is null)
         {
