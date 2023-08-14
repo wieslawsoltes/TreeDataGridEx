@@ -68,6 +68,7 @@ public class TreeDataGridEx : TemplatedControl
         }
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnList<>))]
     private static ITreeDataGridSource? CreateSource(IEnumerable items, ObservableCollection<TreeDataGridColumn> columns)
     {
         var modelType = items.GetType().GenericTypeArguments[0];
@@ -99,6 +100,7 @@ public class TreeDataGridEx : TemplatedControl
         return source;
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(FlatTreeDataGridSource<>))]
     private static ITreeDataGridSource? CreateFlatSource(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
@@ -108,6 +110,7 @@ public class TreeDataGridEx : TemplatedControl
         return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HierarchicalExpanderColumn<>))]
     private static ITreeDataGridSource? CreateHierarchicalSource(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
@@ -182,6 +185,7 @@ public class TreeDataGridEx : TemplatedControl
         }
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HierarchicalExpanderColumn<>))]
     private static IColumn? CreateHierarchicalExpanderColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
@@ -198,6 +202,7 @@ public class TreeDataGridEx : TemplatedControl
         return (IColumn?) Activator.CreateInstance(type, inner, childSelector, null, null);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TemplateColumn<>))]
     private static IColumn? CreateTemplateColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type modelType,
@@ -210,6 +215,7 @@ public class TreeDataGridEx : TemplatedControl
         return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, null);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TextColumn<,>))]
     private static IColumn? CreateTextColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
@@ -239,6 +245,7 @@ public class TreeDataGridEx : TemplatedControl
         return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CheckBoxColumn<>))]
     private static IColumn? CreateCheckBoxColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
@@ -266,6 +273,7 @@ public class TreeDataGridEx : TemplatedControl
         return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Func<,>))]
     private static LambdaExpression CreateGetterLambdaExpression(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType, 
@@ -279,6 +287,7 @@ public class TreeDataGridEx : TemplatedControl
         return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Action<,>))]
     private static LambdaExpression CreateSetterLambdaExpression(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType, 
@@ -293,6 +302,8 @@ public class TreeDataGridEx : TemplatedControl
         return Expression.Lambda(lambdaType, assign, modelParameter, valueParameter);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(IEnumerable<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Func<,>))]
     private static LambdaExpression CreateChildSelectorLambdaExpression(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType, 
