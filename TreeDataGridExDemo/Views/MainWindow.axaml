@@ -4,6 +4,7 @@
         xmlns:local="using:TreeDataGridExDemo.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TreeDataGridExDemo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -42,6 +43,29 @@
           <TreeDataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" DataType="{x:Type local:Country}" />
         </TreeDataGridEx.Columns>
       </TreeDataGridEx>
+
+    </TabItem>
+
+    <TabItem Header="Columns from Style">
+
+      <TabItem.Styles>
+        <Style Selector="TreeDataGridEx.columns">
+          <Setter Property="Columns">
+            <TreeDataGridColumnsTemplate>
+              <objectModel:ObservableCollection x:TypeArguments="TreeDataGridColumn">
+                <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" x:DataType="local:Country" />
+                <TreeDataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" x:DataType="local:Country" />
+                <TreeDataGridTextColumn Header="Region" Binding="{Binding Region}" x:DataType="local:Country" />
+                <TreeDataGridTextColumn Header="Population" Binding="{Binding Population}" Width="3*" x:DataType="local:Country" />
+                <TreeDataGridTextColumn Header="Area" Binding="{Binding Area}" Width="3*" x:DataType="local:Country" />
+                <TreeDataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" x:DataType="local:Country" />
+              </objectModel:ObservableCollection>
+            </TreeDataGridColumnsTemplate>
+          </Setter>
+        </Style>
+      </TabItem.Styles>
+
+      <TreeDataGridEx Classes="columns" ItemsSource="{Binding Countries}" />
 
     </TabItem>
 
