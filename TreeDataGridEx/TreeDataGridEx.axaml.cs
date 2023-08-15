@@ -18,25 +18,61 @@ namespace TreeDataGridEx;
 
 public class TreeDataGridEx : TemplatedControl
 {
-    public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
-        AvaloniaProperty.Register<TreeDataGridEx, IEnumerable>(nameof(ItemsSource));
+    public static readonly StyledProperty<bool> AutoDragDropRowsProperty =
+        TreeDataGrid.AutoDragDropRowsProperty.AddOwner<TreeDataGridEx>();
+
+    public static readonly StyledProperty<bool> CanUserResizeColumnsProperty =
+        TreeDataGrid.CanUserResizeColumnsProperty.AddOwner<TreeDataGridEx>();
+
+    public static readonly StyledProperty<bool> CanUserSortColumnsProperty =
+        TreeDataGrid.CanUserSortColumnsProperty.AddOwner<TreeDataGridEx>();
 
     public static readonly StyledProperty<ObservableCollection<TreeDataGridColumn>?> ColumnsProperty = 
         AvaloniaProperty.Register<TreeDataGridEx, ObservableCollection<TreeDataGridColumn>?>(nameof(Columns));
 
+    public static readonly StyledProperty<bool> ShowColumnHeadersProperty =
+        TreeDataGrid.ShowColumnHeadersProperty.AddOwner<TreeDataGridEx>();
+
+    public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
+        AvaloniaProperty.Register<TreeDataGridEx, IEnumerable>(nameof(ItemsSource));
+
     private ITreeDataGridSource? _source;
     private TreeDataGrid? _treeDataGrid;
 
-    public IEnumerable ItemsSource
+    public bool AutoDragDropRows
     {
-        get => GetValue(ItemsSourceProperty);
-        set => SetValue(ItemsSourceProperty, value);
+        get => GetValue(AutoDragDropRowsProperty);
+        set => SetValue(AutoDragDropRowsProperty, value);
+    }
+
+    public bool CanUserResizeColumns
+    {
+        get => GetValue(CanUserResizeColumnsProperty);
+        set => SetValue(CanUserResizeColumnsProperty, value);
+    }
+
+    public bool CanUserSortColumns
+    {
+        get => GetValue(CanUserSortColumnsProperty);
+        set => SetValue(CanUserSortColumnsProperty, value);
     }
 
     public ObservableCollection<TreeDataGridColumn>? Columns
     {
         get => GetValue(ColumnsProperty);
         set => SetValue(ColumnsProperty, value);
+    }
+
+    public bool ShowColumnHeaders
+    {
+        get => GetValue(ShowColumnHeadersProperty);
+        set => SetValue(ShowColumnHeadersProperty, value);
+    }
+
+    public IEnumerable ItemsSource
+    {
+        get => GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
     }
 
     public TreeDataGrid? TreeDataGrid => _treeDataGrid;

@@ -9,9 +9,14 @@
   <Style Selector="local|TreeDataGridEx">
 
     <Setter Property="Template">
+
       <ControlTemplate>
 
-        <TreeDataGrid Name="PART_TreeDataGrid">
+        <TreeDataGrid Name="PART_TreeDataGrid"
+                      AutoDragDropRows="{TemplateBinding AutoDragDropRows}"
+                      CanUserResizeColumns="{TemplateBinding CanUserResizeColumns}"
+                      CanUserSortColumns="{TemplateBinding CanUserSortColumns}"
+                      ShowColumnHeaders="{TemplateBinding ShowColumnHeaders}">
         </TreeDataGrid>
 
       </ControlTemplate>

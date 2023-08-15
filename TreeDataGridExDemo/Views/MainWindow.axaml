@@ -21,7 +21,12 @@
 
     <TabItem Header="Countries">
 
-      <TreeDataGridEx Name="TreeDataGridExCountries" ItemsSource="{Binding Countries}">
+      <TreeDataGridEx Name="TreeDataGridExCountries" 
+                      ItemsSource="{Binding Countries}"
+                      AutoDragDropRows="False"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="True"
+                      ShowColumnHeaders="True">
         <TreeDataGridEx.Columns>
           <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" DataType="{x:Type local:Country}" />
           <TreeDataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" DataType="{x:Type local:Country}" />
@@ -65,13 +70,15 @@
         </Style>
       </TabItem.Styles>
 
-      <TreeDataGridEx Classes="columns" ItemsSource="{Binding Countries}" />
+      <TreeDataGridEx Classes="columns" 
+                      ItemsSource="{Binding Countries}" />
 
     </TabItem>
 
     <TabItem Header="Drag/Drop">
 
-      <TreeDataGridEx Name="TreeDataGridExDragDrop" ItemsSource="{Binding DragAndDropItems}">
+      <TreeDataGridEx Name="TreeDataGridExDragDrop" 
+                      ItemsSource="{Binding DragAndDropItems}">
         <TreeDataGridEx.Columns>
           <TreeDataGridHierarchicalExpanderColumn ChildrenName="Children" DataType="{x:Type local:DragDropItem}">
             <TreeDataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" DataType="{x:Type local:DragDropItem}" />
