@@ -3,6 +3,7 @@
 [![CI](https://github.com/wieslawsoltes/TreeDataGridEx/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/TreeDataGridEx/actions/workflows/build.yml)
 
 [![NuGet](https://img.shields.io/nuget/v/TreeDataGridEx.svg)](https://www.nuget.org/packages/TreeDataGridEx)
+[![NuGet](https://img.shields.io/nuget/dt/TreeDataGridEx.svg)](https://www.nuget.org/packages/TreeDataGridEx)
 
 **TreeDataGridEx** is an experimental version of [TreeDataGrid](https://github.com/AvaloniaUI/Avalonia.Controls.TreeDataGrid) for [Avalonia](https://github.com/AvaloniaUI/Avalonia) with added XAML syntax.
 
