@@ -90,6 +90,13 @@ public class TreeDataGridEx : TemplatedControl
 
         _treeDataGrid = e.NameScope.Find<TreeDataGrid>("PART_TreeDataGrid");
 
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        (_source as IDisposable)?.Dispose();
+
         var itemsSource = ItemsSource;
         var columns = Columns;
 
@@ -103,6 +110,16 @@ public class TreeDataGridEx : TemplatedControl
         {
             _source = source;
             _treeDataGrid.Source = _source;
+        }
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == ItemsSourceProperty)
+        {
+            Initialize();
         }
     }
 
