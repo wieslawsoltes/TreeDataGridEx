@@ -33,7 +33,7 @@
           <TreeDataGridTemplateColumn Header="Region" DataType="{x:Type local:Country}">
             <TreeDataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Region}" VerticalAlignment="Center" />
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellTemplate>
             <TreeDataGridTemplateColumn.CellEditingTemplate>
