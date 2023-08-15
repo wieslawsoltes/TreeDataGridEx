@@ -169,6 +169,7 @@ public class TreeDataGridEx : TemplatedControl
         IEnumerable items)
     {
         var type = typeof(FlatTreeDataGridSource<>).MakeGenericType(modelType);
+
         return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
@@ -179,6 +180,7 @@ public class TreeDataGridEx : TemplatedControl
         IEnumerable items)
     {
         var type = typeof(HierarchicalTreeDataGridSource<>).MakeGenericType(modelType);
+
         return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
     }
 
@@ -195,6 +197,7 @@ public class TreeDataGridEx : TemplatedControl
                 {
                     return null;
                 }
+
                 return CreateTemplateColumn(
                     modelType,
                     templateColumn.Header,
@@ -208,6 +211,7 @@ public class TreeDataGridEx : TemplatedControl
                 {
                     return null;
                 }
+
                 return CreateTextColumn(
                     modelType,
                     textColumn.Header,
@@ -220,6 +224,7 @@ public class TreeDataGridEx : TemplatedControl
                 {
                     return null;
                 }
+
                 return CreateCheckBoxColumn(
                     modelType,
                     checkBoxColumn.Header,
@@ -232,9 +237,11 @@ public class TreeDataGridEx : TemplatedControl
                 {
                     return null;
                 }
+
                 var inner = hierarchicalExpanderColumn.Inner is not null 
                     ? CreateColumn(modelType, hierarchicalExpanderColumn.Inner)
                     : null;
+
                 return CreateHierarchicalExpanderColumn(
                     modelType,
                     inner,
@@ -259,8 +266,10 @@ public class TreeDataGridEx : TemplatedControl
         {
             return null;
         }
+
         var childSelector = CreateChildSelectorLambdaExpression(modelType, property).Compile();
         var type = typeof(HierarchicalExpanderColumn<>).MakeGenericType(modelType);
+
         return (IColumn?) Activator.CreateInstance(type, inner, childSelector, null, null);
     }
 
@@ -274,6 +283,7 @@ public class TreeDataGridEx : TemplatedControl
         GridLength? width = null)
     {
         var type = typeof(TemplateColumn<>).MakeGenericType(modelType);
+
         return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, null);
     }
 
@@ -290,19 +300,24 @@ public class TreeDataGridEx : TemplatedControl
         {
             return null;
         }
+
         var property = modelType.GetProperty(path);
         if (property is null)
         {
             return null;
         }
+
         var propertyType = property.PropertyType;
         var getter = CreateGetterLambdaExpression(modelType, property);
         var type = typeof(TextColumn<,>).MakeGenericType(modelType, propertyType);
+
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
             return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
         }
+
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
+
         return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
@@ -319,18 +334,23 @@ public class TreeDataGridEx : TemplatedControl
         {
             return null;
         }
+
         var property = modelType.GetProperty(path);
         if (property is null)
         {
             return null;
         }
+
         var getter = CreateGetterLambdaExpression(modelType, property);
         var type = typeof(CheckBoxColumn<>).MakeGenericType(modelType);
+
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
             return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
         }
+
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
+
         return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
     }
 
