@@ -75,6 +75,8 @@ public class TreeDataGridEx : TemplatedControl
         set => SetValue(ItemsSourceProperty, value);
     }
 
+    public ITreeDataGridSource? Source => _source;
+
     public TreeDataGrid? TreeDataGrid => _treeDataGrid;
 
     public TreeDataGridEx()
