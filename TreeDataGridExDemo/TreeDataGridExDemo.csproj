@@ -17,7 +17,6 @@
   <!-- dotnet publish -r win-x64 -c Release -->
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <PublishAot>true</PublishAot>
-    <TrimmerRootDescriptor>TrimmerRootDescriptor.xml</TrimmerRootDescriptor>
   </PropertyGroup>
 
   <ItemGroup>
