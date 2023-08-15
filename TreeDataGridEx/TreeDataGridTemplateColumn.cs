@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 
@@ -7,6 +6,10 @@ namespace TreeDataGridEx;
 
 public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
 {
+    // TODO: TemplateColumnOptions<>.IsTextSearchEnabled
+
+    // TODO: TemplateColumnOptions<>.TextSearchValueSelector
+
     public static readonly DirectProperty<TreeDataGridTemplateColumn, IDataTemplate?> CellTemplateProperty =
         AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn, IDataTemplate?>(
             nameof(CellTemplate),

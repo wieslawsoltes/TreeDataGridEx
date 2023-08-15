@@ -5,6 +5,10 @@ namespace TreeDataGridEx;
 
 public class TreeDataGridHierarchicalExpanderColumn : TreeDataGridColumn
 {
+    // TODO: HierarchicalExpanderColumn<>.hasChildrenSelector
+
+    // TODO: HierarchicalExpanderColumn<>.isExpandedSelector
+
     public static readonly DirectProperty<TreeDataGridHierarchicalExpanderColumn, TreeDataGridColumn?> InnerProperty =
         AvaloniaProperty.RegisterDirect<TreeDataGridHierarchicalExpanderColumn, TreeDataGridColumn?>(
             nameof(Inner),

@@ -10,7 +10,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 
@@ -200,10 +199,7 @@ public class TreeDataGridEx : TemplatedControl
 
                 return CreateTemplateColumn(
                     modelType,
-                    templateColumn.Header,
-                    templateColumn.CellTemplate,
-                    templateColumn.CellEditingTemplate,
-                    templateColumn.Width);
+                    templateColumn);
             }
             case TreeDataGridTextColumn textColumn:
             {
@@ -214,9 +210,7 @@ public class TreeDataGridEx : TemplatedControl
 
                 return CreateTextColumn(
                     modelType,
-                    textColumn.Header,
-                    textColumn.Binding,
-                    textColumn.Width);
+                    textColumn);
             }
             case TreeDataGridCheckBoxColumn checkBoxColumn:
             {
@@ -227,9 +221,7 @@ public class TreeDataGridEx : TemplatedControl
 
                 return CreateCheckBoxColumn(
                     modelType,
-                    checkBoxColumn.Header,
-                    checkBoxColumn.Binding,
-                    checkBoxColumn.Width);
+                    checkBoxColumn);
             }
             case TreeDataGridHierarchicalExpanderColumn hierarchicalExpanderColumn:
             {
@@ -270,31 +262,58 @@ public class TreeDataGridEx : TemplatedControl
         var childSelector = CreateChildSelectorLambdaExpression(modelType, property).Compile();
         var type = typeof(HierarchicalExpanderColumn<>).MakeGenericType(modelType);
 
+        // TODO:
+        // - hasChildrenSelector
+        // - isExpandedSelector
         return (IColumn?) Activator.CreateInstance(type, inner, childSelector, null, null);
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TemplateColumn<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnOptions<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TemplateColumnOptions<>))]
     private static IColumn? CreateTemplateColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type modelType,
-        object? header,
-        IDataTemplate cellTemplate,
-        IDataTemplate? cellEditingTemplate = null,
-        GridLength? width = null)
+        TreeDataGridTemplateColumn templateColumn)
     {
+        var header = templateColumn.Header;
+        var cellTemplate = templateColumn.CellTemplate;
+        var cellEditingTemplate = templateColumn.CellEditingTemplate;
+        var width = templateColumn.Width;
+
         var type = typeof(TemplateColumn<>).MakeGenericType(modelType);
 
-        return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, null);
+        var optionsType = typeof(TemplateColumnOptions<>).MakeGenericType(modelType);
+        var options = Activator.CreateInstance(optionsType);
+
+        // ColumnOptions
+        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, templateColumn.CanUserResizeColumn);
+        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, templateColumn.CanUserSortColumn);
+        optionsType.GetProperty("MinWidth")?.SetValue(options, templateColumn.MinWidth);
+        optionsType.GetProperty("MaxWidth")?.SetValue(options, templateColumn.MaxWidth);
+        // TODO: CompareAscending
+        // TODO: CompareDescending
+        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, templateColumn.BeginEditGestures);
+
+        // TemplateColumnOptions
+        // - IsTextSearchEnabled
+        // - TextSearchValueSelector
+
+        return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, options);
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TextColumn<,>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnOptions<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TextColumnOptions<>))]
     private static IColumn? CreateTextColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
-        object? header,
-        IBinding binding,
-        GridLength? width = null)
+        TreeDataGridTextColumn textColumn)
     {
+        var header = textColumn.Header;
+        var binding = textColumn.Binding;
+        var width = textColumn.Width;
+
         var path = (binding as Binding)?.Path ?? (binding as CompiledBindingExtension)?.Path.ToString();
         if (path is null)
         {
@@ -311,24 +330,45 @@ public class TreeDataGridEx : TemplatedControl
         var getter = CreateGetterLambdaExpression(modelType, property);
         var type = typeof(TextColumn<,>).MakeGenericType(modelType, propertyType);
 
+        var optionsType = typeof(TextColumnOptions<>).MakeGenericType(modelType);
+        var options = Activator.CreateInstance(optionsType);
+
+        // ColumnOptions
+        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, textColumn.CanUserResizeColumn);
+        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, textColumn.CanUserSortColumn);
+        optionsType.GetProperty("MinWidth")?.SetValue(options, textColumn.MinWidth);
+        optionsType.GetProperty("MaxWidth")?.SetValue(options, textColumn.MaxWidth);
+        // TODO: CompareAscending
+        // TODO: CompareDescending
+        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, textColumn.BeginEditGestures);
+
+        // TextColumnOptions
+        optionsType.GetProperty("IsTextSearchEnabled")?.SetValue(options, textColumn.IsTextSearchEnabled);
+        optionsType.GetProperty("TextTrimming")?.SetValue(options, textColumn.TextTrimming);
+        optionsType.GetProperty("TextWrapping")?.SetValue(options, textColumn.TextWrapping);
+    
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
-            return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
+            return (IColumn?) Activator.CreateInstance(type, header, getter, width, options);
         }
 
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
 
-        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
+        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, options);
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CheckBoxColumn<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnOptions<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CheckBoxColumnOptions<>))]
     private static IColumn? CreateCheckBoxColumn(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
         Type modelType,
-        object? header,
-        IBinding? binding,
-        GridLength? width = null)
+        TreeDataGridCheckBoxColumn checkBoxColumn)
     {
+        var header = checkBoxColumn.Header;
+        var binding = checkBoxColumn.Binding;
+        var width = checkBoxColumn.Width;
+
         var path = (binding as Binding)?.Path ?? (binding as CompiledBindingExtension)?.Path.ToString();
         if (path is null)
         {
@@ -344,14 +384,28 @@ public class TreeDataGridEx : TemplatedControl
         var getter = CreateGetterLambdaExpression(modelType, property);
         var type = typeof(CheckBoxColumn<>).MakeGenericType(modelType);
 
+        var optionsType = typeof(CheckBoxColumnOptions<>).MakeGenericType(modelType);
+        var options = Activator.CreateInstance(optionsType);
+
+        // ColumnOptions
+        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, checkBoxColumn.CanUserResizeColumn);
+        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, checkBoxColumn.CanUserSortColumn);
+        optionsType.GetProperty("MinWidth")?.SetValue(options, checkBoxColumn.MinWidth);
+        optionsType.GetProperty("MaxWidth")?.SetValue(options, checkBoxColumn.MaxWidth);
+        // TODO: CompareAscending
+        // TODO: CompareDescending
+        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, checkBoxColumn.BeginEditGestures);
+
+        // CheckBoxColumnOptions (none)
+
         if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
         {
-            return (IColumn?) Activator.CreateInstance(type, header, getter, width, null);
+            return (IColumn?) Activator.CreateInstance(type, header, getter, width, options);
         }
 
         var setter = CreateSetterLambdaExpression(modelType, property).Compile();
 
-        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, null);
+        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, options);
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Func<,>))]
