@@ -117,7 +117,7 @@ public class TreeDataGridEx : TemplatedControl
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == ItemsSourceProperty)
+        if (change.Property == ItemsSourceProperty || change.Property == ColumnsProperty)
         {
             Initialize();
         }
