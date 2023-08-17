@@ -1,12 +1,13 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
 public abstract class TreeDataGridColumn : AvaloniaObject
-{
+{/*
     public static readonly DirectProperty<TreeDataGridColumn, Type?> DataTypeProperty =
         AvaloniaProperty.RegisterDirect<TreeDataGridColumn, Type?>(
             nameof(DataType),
@@ -22,4 +23,6 @@ public abstract class TreeDataGridColumn : AvaloniaObject
         get { return _dataType; }
         set { SetAndRaise(DataTypeProperty, ref _dataType, value); }
     }
+*/
+    public abstract IColumn? Create();
 }

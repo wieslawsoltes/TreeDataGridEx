@@ -1,22 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Avalonia;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
-public class TreeDataGridHierarchicalExpanderColumn : TreeDataGridColumn
+public class TreeDataGridHierarchicalExpanderColumn<TModel> : TreeDataGridColumn
+    where TModel : class
 {
     // TODO: HierarchicalExpanderColumn<>.hasChildrenSelector
 
     // TODO: HierarchicalExpanderColumn<>.isExpandedSelector
 
-    public static readonly DirectProperty<TreeDataGridHierarchicalExpanderColumn, TreeDataGridColumn?> InnerProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridHierarchicalExpanderColumn, TreeDataGridColumn?>(
+    public static readonly DirectProperty<TreeDataGridHierarchicalExpanderColumn<TModel>, TreeDataGridColumn?> InnerProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridHierarchicalExpanderColumn<TModel>, TreeDataGridColumn?>(
             nameof(Inner),
             o => o.Inner,
             (o, v) => o.Inner = v);
 
-    public static readonly DirectProperty<TreeDataGridHierarchicalExpanderColumn, string?> ChildrenNameProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridHierarchicalExpanderColumn, string?>(
+    public static readonly DirectProperty<TreeDataGridHierarchicalExpanderColumn<TModel>, string?> ChildrenNameProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridHierarchicalExpanderColumn<TModel>, string?>(
             nameof(ChildrenName),
             o => o.ChildrenName,
             (o, v) => o.ChildrenName = v);
@@ -37,5 +42,24 @@ public class TreeDataGridHierarchicalExpanderColumn : TreeDataGridColumn
     {
         get => _childrenName;
         set => SetAndRaise(ChildrenNameProperty, ref _childrenName, value);
+    }
+
+    public Func<TModel, IEnumerable<TModel>?>? ChildSelector { get; set; }
+
+    public Expression<Func<TModel, bool>>? HasChildrenSelector { get; set; }
+
+    public Expression<Func<TModel, bool>>? IsExpandedSelector { get; set; }
+
+    public override IColumn? Create()
+    {
+        var innerColumn = Inner?.Create() as IColumn<TModel>;
+
+        var column = new HierarchicalExpanderColumn<TModel>(
+            innerColumn, 
+            ChildSelector,
+            HasChildrenSelector,
+            IsExpandedSelector);
+
+        return column;
     }
 }

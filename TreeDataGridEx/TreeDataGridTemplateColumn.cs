@@ -1,23 +1,26 @@
+using System;
 using Avalonia;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
-public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
+public class TreeDataGridTemplateColumn<TModel> : TreeDataGridColumnBase
+    where TModel : class
 {
     // TODO: TemplateColumnOptions<>.IsTextSearchEnabled
 
     // TODO: TemplateColumnOptions<>.TextSearchValueSelector
 
-    public static readonly DirectProperty<TreeDataGridTemplateColumn, IDataTemplate?> CellTemplateProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn, IDataTemplate?>(
+    public static readonly DirectProperty<TreeDataGridTemplateColumn<TModel>, IDataTemplate?> CellTemplateProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn<TModel>, IDataTemplate?>(
             nameof(CellTemplate),
             o => o.CellTemplate,
             (o, v) => o.CellTemplate = v);
 
-    public static readonly DirectProperty<TreeDataGridTemplateColumn, IDataTemplate?> CellEditingTemplateProperty =
-        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn, IDataTemplate?>(
+    public static readonly DirectProperty<TreeDataGridTemplateColumn<TModel>, IDataTemplate?> CellEditingTemplateProperty =
+        AvaloniaProperty.RegisterDirect<TreeDataGridTemplateColumn<TModel>, IDataTemplate?>(
             nameof(CellEditingTemplate),
             o => o.CellEditingTemplate,
             (o, v) => o.CellEditingTemplate = v);
@@ -38,5 +41,30 @@ public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
     {
         get => _cellEditingCellTemplate;
         set => SetAndRaise(CellEditingTemplateProperty, ref _cellEditingCellTemplate, value);
+    }
+
+    public override IColumn? Create()
+    {
+       var options = new TemplateColumnOptions<TModel>()
+       {
+           CanUserResizeColumn = CanUserResizeColumn,
+           CanUserSortColumn = CanUserSortColumn,
+           MinWidth = MinWidth,
+           MaxWidth = MaxWidth,
+           // TODO: CompareAscending = CompareAscending,
+           // TODO: CompareDescending = CompareDescending,
+           BeginEditGestures = BeginEditGestures,
+           // TODO: IsTextSearchEnabled = IsTextSearchEnabled,
+           // TODO: TextSearchValueSelector = TextSearchValueSelector,
+       };
+ 
+        var column = new TemplateColumn<TModel>(
+            Header, 
+            CellTemplate, 
+            CellEditingTemplate, 
+            Width,
+            options);
+
+        return column;
     }
 }

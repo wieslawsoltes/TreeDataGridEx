@@ -78,6 +78,7 @@ public class TreeDataGridEx : TemplatedControl
 
     public TreeDataGrid? TreeDataGrid => _treeDataGrid;
 
+    
     public TreeDataGridEx()
     {
         SetCurrentValue(ColumnsProperty, new ObservableCollection<TreeDataGridColumn>());
@@ -103,13 +104,13 @@ public class TreeDataGridEx : TemplatedControl
         {
             return;
         }
-
+/*
         var source = CreateSource(itemsSource, columns);
         if (source is not null)
         {
             _source = source;
             _treeDataGrid.Source = _source;
-        }
+        }*/
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -121,7 +122,7 @@ public class TreeDataGridEx : TemplatedControl
             Initialize();
         }
     }
-
+/*
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnList<>))]
     private static ITreeDataGridSource? CreateSource(IEnumerable items, ObservableCollection<TreeDataGridColumn> columns)
     {
@@ -450,5 +451,5 @@ public class TreeDataGridEx : TemplatedControl
         var convertedPropertyAccess = Expression.Convert(propertyAccess, valueType);
         var lambdaType = typeof(Func<,>).MakeGenericType(modelType, valueType);
         return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
-    }
+    }*/
 }
