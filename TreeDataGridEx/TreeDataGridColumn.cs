@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
@@ -22,4 +23,8 @@ public abstract class TreeDataGridColumn : AvaloniaObject
         get { return _dataType; }
         set { SetAndRaise(DataTypeProperty, ref _dataType, value); }
     }
+
+    internal abstract IColumn? Create(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        Type modelType);
 }

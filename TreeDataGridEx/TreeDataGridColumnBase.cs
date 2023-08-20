@@ -1,3 +1,7 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
@@ -72,5 +76,34 @@ public abstract class TreeDataGridColumnBase : TreeDataGridColumn
     {
         get => GetValue(WidthProperty);
         set => SetValue(WidthProperty, value);
+    }
+
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Func<,>))]
+    protected LambdaExpression CreateGetterLambdaExpression(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType, 
+        PropertyInfo property)
+    {
+        var valueType = property.PropertyType;
+        var modelParameter = Expression.Parameter(modelType, "model");
+        var propertyAccess = Expression.Property(modelParameter, property);
+        var convertedPropertyAccess = Expression.Convert(propertyAccess, valueType);
+        var lambdaType = typeof(Func<,>).MakeGenericType(modelType, valueType);
+        return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
+    }
+
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Action<,>))]
+    protected LambdaExpression CreateSetterLambdaExpression(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
+        Type modelType, 
+        PropertyInfo property)
+    {
+        var valueType = property.PropertyType;
+        var modelParameter = Expression.Parameter(modelType, "model");
+        var valueParameter = Expression.Parameter(valueType, "value");
+        var propertyAccess = Expression.Property(modelParameter, property);
+        var assign = Expression.Assign(propertyAccess, Expression.Convert(valueParameter, property.PropertyType));
+        var lambdaType = typeof(Action<,>).MakeGenericType(modelType, valueType);
+        return Expression.Lambda(lambdaType, assign, modelParameter, valueParameter);
     }
 }

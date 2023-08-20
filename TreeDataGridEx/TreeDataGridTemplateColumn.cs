@@ -1,4 +1,7 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 
@@ -38,5 +41,43 @@ public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
     {
         get => _cellEditingCellTemplate;
         set => SetAndRaise(CellEditingTemplateProperty, ref _cellEditingCellTemplate, value);
+    }
+
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TemplateColumn<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColumnOptions<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(TemplateColumnOptions<>))]
+    internal override IColumn? Create(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        Type modelType)
+    {
+        var header = Header;
+        var cellTemplate = CellTemplate;
+        var cellEditingTemplate = CellEditingTemplate;
+        var width = Width;
+
+        if (cellTemplate is null)
+        {
+            return null;
+        }
+
+        var type = typeof(TemplateColumn<>).MakeGenericType(modelType);
+
+        var optionsType = typeof(TemplateColumnOptions<>).MakeGenericType(modelType);
+        var options = Activator.CreateInstance(optionsType);
+
+        // ColumnOptions
+        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, CanUserResizeColumn);
+        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, CanUserSortColumn);
+        optionsType.GetProperty("MinWidth")?.SetValue(options, MinWidth);
+        optionsType.GetProperty("MaxWidth")?.SetValue(options, MaxWidth);
+        // TODO: CompareAscending
+        // TODO: CompareDescending
+        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, BeginEditGestures);
+
+        // TemplateColumnOptions
+        // - IsTextSearchEnabled
+        // - TextSearchValueSelector
+
+        return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, options);
     }
 }
