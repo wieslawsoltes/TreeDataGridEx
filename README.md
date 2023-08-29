@@ -19,7 +19,7 @@ TreeDataGridEx is delivered as a NuGet package.
 
 You can find the packages here [NuGet](https://www.nuget.org/packages/TreeDataGridEx/) and install the package like this:
 
-`Install-Package Avalonia.Xaml.Behaviors`
+`Install-Package TreeDataGridEx`
 
 ### Styles
 
