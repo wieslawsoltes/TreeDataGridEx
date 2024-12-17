@@ -1,41 +1,32 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ReactiveUI;
 
 namespace TreeDataGridExDemo.Models
 {
-    public class DragDropItem : ReactiveObject
+    public partial class DragDropItem(string name) : ReactiveObject
     {
         private static readonly Random s_random = new Random(0);
-        private ObservableCollection<DragDropItem>? _children;
-        private bool _allowDrag = true;
-        private bool _allowDrop = true;
 
-        public DragDropItem(string name) => Name = name;
+        public string Name { get; } = name;
 
-        public string Name { get; }
+        [Reactive]
+        public partial bool AllowDrag { get; set; }
+        
+        [Reactive]
+        public partial bool AllowDrop { get; set; }
 
-        public bool AllowDrag
-        {
-            get => _allowDrag;
-            set => this.RaiseAndSetIfChanged(ref _allowDrag, value);
-        }
-
-        public bool AllowDrop
-        {
-            get => _allowDrop;
-            set => this.RaiseAndSetIfChanged(ref _allowDrop, value);
-        }
-
-        public ObservableCollection<DragDropItem> Children => _children ??= CreateRandomItems();
+        [field: AllowNull, MaybeNull]
+        public ObservableCollection<DragDropItem> Children => field ??= CreateRandomItems();
 
         public static ObservableCollection<DragDropItem> CreateRandomItems()
         {
             var names = new Bogus.DataSets.Name();
             var count = s_random.Next(10);
             return new ObservableCollection<DragDropItem>(Enumerable.Range(0, count)
-                .Select(x => new DragDropItem(names.FullName())));
+                .Select(_ => new DragDropItem(names.FullName())));
         }
     }
 }
