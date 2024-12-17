@@ -8,6 +8,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IsPackable>False</IsPackable>
+    <AvaloniaVersion>11.2.2</AvaloniaVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,15 +21,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.2"/>
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)"/>
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2"/>
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0"/>
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.2"/>
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)"/>
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.0"/>
     <PackageReference Include="Bogus" Version="34.0.2" />
   </ItemGroup>
 
