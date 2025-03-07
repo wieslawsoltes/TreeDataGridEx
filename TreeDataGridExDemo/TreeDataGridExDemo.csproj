@@ -8,7 +8,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IsPackable>False</IsPackable>
-    <AvaloniaVersion>11.2.2</AvaloniaVersion>
+    <AvaloniaVersion>11.2.5</AvaloniaVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -39,7 +39,7 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)"/>
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.0"/>
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1"/>
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="ReactiveGenerator" Version="0.9.6">
       <PrivateAssets>all</PrivateAssets>
