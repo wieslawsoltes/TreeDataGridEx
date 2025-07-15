@@ -60,24 +60,16 @@ public class TreeDataGridTemplateColumn : TreeDataGridColumnBase
             return null;
         }
 
-        var type = typeof(TemplateColumn<>).MakeGenericType(modelType);
-
-        var optionsType = typeof(TemplateColumnOptions<>).MakeGenericType(modelType);
-        var options = Activator.CreateInstance(optionsType);
-
-        // ColumnOptions
-        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, CanUserResizeColumn);
-        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, CanUserSortColumn);
-        optionsType.GetProperty("MinWidth")?.SetValue(options, MinWidth);
-        optionsType.GetProperty("MaxWidth")?.SetValue(options, MaxWidth);
-        // TODO: CompareAscending
-        // TODO: CompareDescending
-        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, BeginEditGestures);
-
-        // TemplateColumnOptions
-        // - IsTextSearchEnabled
-        // - TextSearchValueSelector
-
-        return (IColumn?) Activator.CreateInstance(type, header, cellTemplate, cellEditingTemplate, width, options);
+        return ColumnReflectionFactory.CreateTemplateColumn(
+            modelType,
+            cellTemplate,
+            cellEditingTemplate,
+            header,
+            width,
+            CanUserResizeColumn,
+            CanUserSortColumn,
+            MinWidth,
+            MaxWidth,
+            BeginEditGestures);
     }
 }

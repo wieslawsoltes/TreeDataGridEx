@@ -83,34 +83,18 @@ public class TreeDataGridTextColumn : TreeDataGridColumnBase
             return null;
         }
 
-        var propertyType = property.PropertyType;
-        var getter = CreateGetterLambdaExpression(modelType, property);
-        var type = typeof(TextColumn<,>).MakeGenericType(modelType, propertyType);
-
-        var optionsType = typeof(TextColumnOptions<>).MakeGenericType(modelType);
-        var options = Activator.CreateInstance(optionsType);
-
-        // ColumnOptions
-        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, CanUserResizeColumn);
-        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, CanUserSortColumn);
-        optionsType.GetProperty("MinWidth")?.SetValue(options, MinWidth);
-        optionsType.GetProperty("MaxWidth")?.SetValue(options, MaxWidth);
-        // TODO: CompareAscending
-        // TODO: CompareDescending
-        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, BeginEditGestures);
-
-        // TextColumnOptions
-        optionsType.GetProperty("IsTextSearchEnabled")?.SetValue(options, IsTextSearchEnabled);
-        optionsType.GetProperty("TextTrimming")?.SetValue(options, TextTrimming);
-        optionsType.GetProperty("TextWrapping")?.SetValue(options, TextWrapping);
-    
-        if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
-        {
-            return (IColumn?) Activator.CreateInstance(type, header, getter, width, options);
-        }
-
-        var setter = CreateSetterLambdaExpression(modelType, property).Compile();
-
-        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, options);
+        return ColumnReflectionFactory.CreateTextColumn(
+            modelType,
+            property,
+            header,
+            width,
+            CanUserResizeColumn,
+            CanUserSortColumn,
+            MinWidth,
+            MaxWidth,
+            BeginEditGestures,
+            IsTextSearchEnabled,
+            TextTrimming,
+            TextWrapping);
     }
 }

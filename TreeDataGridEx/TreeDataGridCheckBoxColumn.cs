@@ -55,30 +55,15 @@ public class TreeDataGridCheckBoxColumn : TreeDataGridColumnBase
             return null;
         }
 
-        var getter = CreateGetterLambdaExpression(modelType, property);
-        var type = typeof(CheckBoxColumn<>).MakeGenericType(modelType);
-
-        var optionsType = typeof(CheckBoxColumnOptions<>).MakeGenericType(modelType);
-        var options = Activator.CreateInstance(optionsType);
-
-        // ColumnOptions
-        optionsType.GetProperty("CanUserResizeColumn")?.SetValue(options, CanUserResizeColumn);
-        optionsType.GetProperty("CanUserSortColumn")?.SetValue(options, CanUserSortColumn);
-        optionsType.GetProperty("MinWidth")?.SetValue(options, MinWidth);
-        optionsType.GetProperty("MaxWidth")?.SetValue(options, MaxWidth);
-        // TODO: CompareAscending
-        // TODO: CompareDescending
-        optionsType.GetProperty("BeginEditGestures")?.SetValue(options, BeginEditGestures);
-
-        // CheckBoxColumnOptions (none)
-
-        if (!property.CanWrite || (property.SetMethod is not null && !property.SetMethod.IsPublic))
-        {
-            return (IColumn?) Activator.CreateInstance(type, header, getter, width, options);
-        }
-
-        var setter = CreateSetterLambdaExpression(modelType, property).Compile();
-
-        return (IColumn?) Activator.CreateInstance(type, header, getter, setter, width, options);
+        return ColumnReflectionFactory.CreateCheckBoxColumn(
+            modelType,
+            property,
+            header,
+            width,
+            CanUserResizeColumn,
+            CanUserSortColumn,
+            MinWidth,
+            MaxWidth,
+            BeginEditGestures);
     }
 }

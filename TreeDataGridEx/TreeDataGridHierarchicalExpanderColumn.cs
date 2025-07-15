@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Metadata;
@@ -58,35 +55,10 @@ public class TreeDataGridHierarchicalExpanderColumn : TreeDataGridColumn
             return null;
         }
 
-        var innerColumn = inner?.Create(modelType);
-
-        var property = modelType.GetProperty(childrenName);
-        if (property is null)
-        {
-            return null;
-        }
-
-        var childSelector = CreateChildSelectorLambdaExpression(modelType, property).Compile();
-        var type = typeof(HierarchicalExpanderColumn<>).MakeGenericType(modelType);
-
-        // TODO:
-        // - hasChildrenSelector
-        // - isExpandedSelector
-        return (IColumn?) Activator.CreateInstance(type, innerColumn, childSelector, null, null);
+        return ColumnReflectionFactory.CreateHierarchicalExpanderColumn(
+            modelType,
+            inner,
+            childrenName);
     }
 
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(IEnumerable<>))]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Func<,>))]
-    private LambdaExpression CreateChildSelectorLambdaExpression(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
-        Type modelType, 
-        PropertyInfo property)
-    {
-        var valueType = typeof(IEnumerable<>).MakeGenericType(modelType);
-        var modelParameter = Expression.Parameter(modelType, "model");
-        var propertyAccess = Expression.Property(modelParameter, property);
-        var convertedPropertyAccess = Expression.Convert(propertyAccess, valueType);
-        var lambdaType = typeof(Func<,>).MakeGenericType(modelType, valueType);
-        return Expression.Lambda(lambdaType, convertedPropertyAccess, modelParameter);
-    }
 }

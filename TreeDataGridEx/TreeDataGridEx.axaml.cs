@@ -123,15 +123,14 @@ public class TreeDataGridEx : TemplatedControl
         var modelType = items.GetType().GenericTypeArguments[0];
 
         var source = columns.Any(x => x is TreeDataGridHierarchicalExpanderColumn)
-            ? CreateHierarchicalSource(modelType, items)
-            : CreateFlatSource(modelType, items);
+            ? ColumnReflectionFactory.CreateHierarchicalSource(modelType, items)
+            : ColumnReflectionFactory.CreateFlatSource(modelType, items);
         if (source is null)
         {
             return null;
         }
 
-        var columnsType = typeof(ColumnList<>).MakeGenericType(modelType);
-        var add = columnsType.GetMethod("Add");
+        var add = ColumnReflectionFactory.GetColumnListAdd(modelType);
         if (add is null)
         {
             return null;
@@ -144,7 +143,7 @@ public class TreeDataGridEx : TemplatedControl
                 var c = column.Create(column.DataType ?? modelType);
                 if (c is not null)
                 {
-                    add.Invoke(source.Columns, new object[] { c });
+                    add(source.Columns, c);
                 }
             }
             catch (Exception)
@@ -156,25 +155,4 @@ public class TreeDataGridEx : TemplatedControl
         return source;
     }
 
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(FlatTreeDataGridSource<>))]
-    private static ITreeDataGridSource? CreateFlatSource(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
-        Type modelType,
-        IEnumerable items)
-    {
-        var type = typeof(FlatTreeDataGridSource<>).MakeGenericType(modelType);
-
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
-    }
-
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HierarchicalExpanderColumn<>))]
-    private static ITreeDataGridSource? CreateHierarchicalSource(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] 
-        Type modelType,
-        IEnumerable items)
-    {
-        var type = typeof(HierarchicalTreeDataGridSource<>).MakeGenericType(modelType);
-
-        return (ITreeDataGridSource?)Activator.CreateInstance(type, items);
-    }
 }
