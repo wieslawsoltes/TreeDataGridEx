@@ -8,7 +8,7 @@ public class ColumnReflectionFactoryTests
     static ColumnReflectionFactoryTests()
     {
         AppBuilder.Configure<Application>()
-                  .UseHeadless()
+                  .UseHeadless(new AvaloniaHeadlessPlatformOptions())
                   .SetupWithoutStarting();
     }
 
