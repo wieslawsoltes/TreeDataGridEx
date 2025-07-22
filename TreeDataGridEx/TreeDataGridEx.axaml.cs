@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
+using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
@@ -72,6 +73,7 @@ public class TreeDataGridEx : TemplatedControl
         set => SetValue(ItemsSourceProperty, value);
     }
 
+    [Content]
     public ITreeDataGridSource? Source
     {
         get => GetValue(SourceProperty);
