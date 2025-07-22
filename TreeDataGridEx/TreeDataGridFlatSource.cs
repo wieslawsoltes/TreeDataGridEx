@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
 using Avalonia.Controls.Selection;
+using Avalonia.Metadata;
 
 namespace TreeDataGridEx;
 
@@ -41,6 +42,7 @@ public class TreeDataGridFlatSource<T> : AvaloniaObject, ITreeDataGridSource, ID
         set => SetValue(ItemsProperty, value);
     }
 
+    [Content]
     public ObservableCollection<TreeDataGridColumn>? Columns
     {
         get => GetValue(ColumnsProperty);
