@@ -20,6 +20,7 @@
 
   <TabControl>
 
+<!--
     <TabItem Header="Countries">
 
       <TreeDataGridEx Name="TreeDataGridExCountries" 
@@ -40,7 +41,6 @@
             <TreeDataGridTemplateColumn.CellEditingTemplate>
               <DataTemplate>
                 <TextBox Text="{Binding Region}" />
-                <!--<ComboBox ItemsSource="{x:Static local:Countries.Regions}" SelectedItem="{Binding Region}"/>-->
               </DataTemplate>
             </TreeDataGridTemplateColumn.CellEditingTemplate>
           </TreeDataGridTemplateColumn>
@@ -75,10 +75,10 @@
                       ItemsSource="{Binding Countries}" />
 
     </TabItem>
-
+-->
     <TabItem Header="XAML Source">
       <TabItem.Resources>
-        <ex:TreeDataGridFlatSource x:TypeArguments="local:Country" x:Key="CountriesSource" Items="{Binding Countries}">
+        <ex:TreeDataGridFlatSource x:TypeArguments="local:Country" x:Key="CountriesSource1" Items="{Binding Countries}">
           <ex:TreeDataGridFlatSource.Columns>
             <objectModel:ObservableCollection x:TypeArguments="TreeDataGridColumn">
               <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" x:DataType="local:Country" />
@@ -90,12 +90,27 @@
             </objectModel:ObservableCollection>
           </ex:TreeDataGridFlatSource.Columns>
         </ex:TreeDataGridFlatSource>
+
       </TabItem.Resources>
 
-      <TreeDataGridEx Source="{StaticResource CountriesSource}" />
+      <!-- <TreeDataGridEx Source="{StaticResource CountriesSource1}" /> -->
+
+
+      <TreeDataGridEx>
+        <TreeDataGridFlatSource Items="{Binding Countries}" x:TypeArguments="local:Country">
+          <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Region" Binding="{Binding Region}" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Population" Binding="{Binding Population}" Width="3*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Area" Binding="{Binding Area}" Width="3*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" x:DataType="local:Country" />
+        </TreeDataGridFlatSource>
+      </TreeDataGridEx>
+
 
     </TabItem>
 
+<!--
     <TabItem Header="Drag/Drop">
 
       <TreeDataGridEx Name="TreeDataGridExDragDrop" 
@@ -125,7 +140,7 @@
       </DataGrid>
 
     </TabItem>
-
+-->
   </TabControl>
   
 </Window>
