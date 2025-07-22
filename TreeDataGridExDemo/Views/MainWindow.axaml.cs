@@ -14,9 +14,9 @@ public partial class MainWindow : Window
 
         // RendererDiagnostics.DebugOverlays = RendererDebugOverlays.Fps |RendererDebugOverlays.LayoutTimeGraph | RendererDebugOverlays.RenderTimeGraph;
         
-        TreeDataGridExDragDrop.Loaded += TreeDataGridExDragDropOnLoaded;
+        //TreeDataGridExDragDrop.Loaded += TreeDataGridExDragDropOnLoaded;
     }
-
+/*
     private void TreeDataGridExDragDropOnLoaded(object? sender, RoutedEventArgs e)
     {
         if (TreeDataGridExDragDrop.TreeDataGrid is { } treeDataGrid)
@@ -26,7 +26,7 @@ public partial class MainWindow : Window
             treeDataGrid.RowDragOver += DragDrop_RowDragOver;
         }
     }
-
+*/
     private void DragDrop_RowDragStarted(object? sender, TreeDataGridRowDragStartedEventArgs e)
     {
         foreach (DragDropItem i in e.Models)
