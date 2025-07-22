@@ -30,7 +30,10 @@ public class TreeDataGridEx : TemplatedControl
     public static readonly StyledProperty<IEnumerable> ItemsSourceProperty =
         AvaloniaProperty.Register<TreeDataGridEx, IEnumerable>(nameof(ItemsSource));
 
-    private ITreeDataGridSource? _source;
+    public static readonly StyledProperty<ITreeDataGridSource?> SourceProperty =
+        AvaloniaProperty.Register<TreeDataGridEx, ITreeDataGridSource?>(nameof(Source));
+
+    private ITreeDataGridSource? _appliedSource;
     private TreeDataGrid? _treeDataGrid;
 
     public bool AutoDragDropRows
@@ -69,7 +72,13 @@ public class TreeDataGridEx : TemplatedControl
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    public ITreeDataGridSource? Source => _source;
+    public ITreeDataGridSource? Source
+    {
+        get => GetValue(SourceProperty);
+        set => SetValue(SourceProperty, value);
+    }
+
+    public ITreeDataGridSource? AppliedSource => _appliedSource;
 
     public TreeDataGrid? TreeDataGrid => _treeDataGrid;
 
@@ -89,7 +98,7 @@ public class TreeDataGridEx : TemplatedControl
 
     private void Initialize()
     {
-        (_source as IDisposable)?.Dispose();
+        (_appliedSource as IDisposable)?.Dispose();
 
         var itemsSource = ItemsSource;
         var columns = Columns;
@@ -99,11 +108,11 @@ public class TreeDataGridEx : TemplatedControl
             return;
         }
 
-        var source = CreateSource(itemsSource, columns);
+        var source = Source ?? CreateSource(itemsSource, columns);
         if (source is not null)
         {
-            _source = source;
-            _treeDataGrid.Source = _source;
+            _appliedSource = source;
+            _treeDataGrid.Source = _appliedSource;
         }
     }
 
@@ -111,7 +120,9 @@ public class TreeDataGridEx : TemplatedControl
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == ItemsSourceProperty || change.Property == ColumnsProperty)
+        if (change.Property == ItemsSourceProperty ||
+            change.Property == ColumnsProperty ||
+            change.Property == SourceProperty)
         {
             Initialize();
         }

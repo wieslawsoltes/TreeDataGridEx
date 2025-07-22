@@ -110,6 +110,31 @@ To set `Columns` property from Style use `TreeDataGridColumnsTemplate` as `Sette
 </TabItem>
 ```
 
+### Example: Using XAML Source
+
+`TreeDataGridFlatSource` allows you to create a source in XAML and assign it to the `TreeDataGridEx.Source` property. Include `xmlns:ex="using:TreeDataGridEx"` on the root element.
+
+```xaml
+<TabItem Header="XAML Source">
+  <TabItem.Resources>
+    <ex:TreeDataGridFlatSource x:Key="CountriesSource" Items="{Binding Countries}">
+      <ex:TreeDataGridFlatSource.Columns>
+        <objectModel:ObservableCollection x:TypeArguments="TreeDataGridColumn">
+          <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Country" Binding="{Binding Name}" Width="6*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Region" Binding="{Binding Region}" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Population" Binding="{Binding Population}" Width="3*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="Area" Binding="{Binding Area}" Width="3*" x:DataType="local:Country" />
+          <TreeDataGridTextColumn Header="GDP" Binding="{Binding GDP}" Width="3*" x:DataType="local:Country" />
+        </objectModel:ObservableCollection>
+      </ex:TreeDataGridFlatSource.Columns>
+    </ex:TreeDataGridFlatSource>
+  </TabItem.Resources>
+
+  <TreeDataGridEx Source="{StaticResource CountriesSource}" />
+</TabItem>
+```
+
 ## Resources
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/TreeDataGridEx)
