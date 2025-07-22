@@ -12,15 +12,21 @@ using Avalonia.Controls.Selection;
 
 namespace TreeDataGridEx;
 
-public class TreeDataGridFlatSource : AvaloniaObject, ITreeDataGridSource, IDisposable
+/// <summary>
+/// Provides a XAML friendly wrapper around <see cref="FlatTreeDataGridSource{T}"/>.
+/// The generic parameter can be provided from XAML using <c>x:TypeArguments</c>
+/// which avoids the heavy reflection previously used to determine the model type.
+/// </summary>
+public class TreeDataGridFlatSource<T> : AvaloniaObject, ITreeDataGridSource, IDisposable
+    where T : class
 {
-    public static readonly StyledProperty<IEnumerable> ItemsProperty =
-        AvaloniaProperty.Register<TreeDataGridFlatSource, IEnumerable>(nameof(Items));
+    public static readonly StyledProperty<IEnumerable<T>?> ItemsProperty =
+        AvaloniaProperty.Register<TreeDataGridFlatSource<T>, IEnumerable<T>?>(nameof(Items));
 
     public static readonly StyledProperty<ObservableCollection<TreeDataGridColumn>?> ColumnsProperty =
-        AvaloniaProperty.Register<TreeDataGridFlatSource, ObservableCollection<TreeDataGridColumn>?>(nameof(Columns));
+        AvaloniaProperty.Register<TreeDataGridFlatSource<T>, ObservableCollection<TreeDataGridColumn>?>(nameof(Columns));
 
-    private ITreeDataGridSource? _source;
+    private FlatTreeDataGridSource<T>? _source;
 
     public TreeDataGridFlatSource()
     {
@@ -29,7 +35,7 @@ public class TreeDataGridFlatSource : AvaloniaObject, ITreeDataGridSource, IDisp
         this.GetPropertyChangedObservable(ColumnsProperty).Subscribe(_ => Initialize());
     }
 
-    public IEnumerable Items
+    public IEnumerable<T>? Items
     {
         get => GetValue(ItemsProperty);
         set => SetValue(ItemsProperty, value);
@@ -53,30 +59,16 @@ public class TreeDataGridFlatSource : AvaloniaObject, ITreeDataGridSource, IDisp
             return;
         }
 
-        var modelType = items.GetType().GenericTypeArguments.FirstOrDefault();
-        if (modelType is null)
-        {
-            _source = null;
-            return;
-        }
-
-        var type = typeof(FlatTreeDataGridSource<>).MakeGenericType(modelType);
-        _source = (ITreeDataGridSource?)Activator.CreateInstance(type, items);
-        if (_source is null)
-            return;
-
-        var columnsProperty = type.GetProperty("Columns");
-        var targetColumns = columnsProperty?.GetValue(_source);
-        var addMethod = targetColumns?.GetType().GetMethod("Add");
+        _source = new FlatTreeDataGridSource<T>(items);
 
         foreach (var column in columns)
         {
             try
             {
-                var c = column.Create(column.DataType ?? modelType);
+                var c = column.Create(column.DataType ?? typeof(T)) as IColumn<T>;
                 if (c is not null)
                 {
-                    addMethod?.Invoke(targetColumns, new[] { c });
+                    _source.Columns.Add(c);
                 }
             }
             catch

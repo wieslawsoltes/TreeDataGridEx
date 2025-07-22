@@ -117,7 +117,7 @@ To set `Columns` property from Style use `TreeDataGridColumnsTemplate` as `Sette
 ```xaml
 <TabItem Header="XAML Source">
   <TabItem.Resources>
-    <ex:TreeDataGridFlatSource x:Key="CountriesSource" Items="{Binding Countries}">
+    <ex:TreeDataGridFlatSource x:TypeArguments="local:Country" x:Key="CountriesSource" Items="{Binding Countries}">
       <ex:TreeDataGridFlatSource.Columns>
         <objectModel:ObservableCollection x:TypeArguments="TreeDataGridColumn">
           <TreeDataGridCheckBoxColumn Header="*" Binding="{Binding IsSelected}" Width="Auto" x:DataType="local:Country" />
